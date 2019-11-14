@@ -1,0 +1,26 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "clang.exe build active file",
+            "command": "C:/msys64/mingw64/bin/clang.exe",
+            "args": [
+                "-std=c99",
+                "-Wall",
+                "-Wextra",
+                "-Werror",
+                "-g",
+                "C:/Users/robusx/Documents/GitHub/fillit/src/main.c",
+                "C:/Users/robusx/Documents/GitHub/fillit/src/check.c",
+                "C:/Users/robusx/Documents/GitHub/fillit/src/libft.a",
+                "C:/Users/robusx/Documents/GitHub/fillit/libft/ft_strnew.c",
+                "-o",
+                "C:/Users/robusx/Documents/GitHub/fillit/src/main.exe"
+            ],
+            "options": {
+                "cwd": "C:/msys64/mingw64/bin"
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
