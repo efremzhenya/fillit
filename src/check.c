@@ -3,104 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lseema <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 20:57:37 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/13 21:18:34 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:10:36 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "check.h"
 
-static int    check_connects(char *row)
+int     get_contact(char *buff)
 {
-    int        j;
-    int        i;
-    int        touches;
-    int        *b;
-    
-    i = 0;
-    touches = 0;
-    b = block_indexes(row);
-    while (i < 4)
-    {
-        j = 0;
-        while (j < 4 && (i != 3 || j != 3))
-        {
-            if (i == j)
-                j++;
-            if ((b[i] / 4 == b[j] / 4) && (abs(b[i] - b[j]) == 1))
-                touches++;
-            if ((b[i] % 4 == b[j] % 4) && (abs(b[i] / 4 - b[j] / 4) == 1))
-                touches++;
-            j++;
-        }
-        i++;
-    }
-    free(b);
-    printf("%i",touches);
-    return (touches == 6 || touches == 8) ? (1) : (0);
-}
-
-int                *block_indexes(char *row)
-{
-    int            *b_idxs;
-    int            i;
-    int            c;
-    
-    c = 0;
-    i = 0;
-    b_idxs = (int*)malloc(sizeof(int) * 4);
-    while (i < 4)
-    {
-        if (row[c] == '#')
-        {
-            b_idxs[i] = c;
-            i++;
-        }
-        c++;
-    }
-    return (b_idxs);
+    int i;
+	int count;
+	
+	i = 0;
+	count = 0;
+	while (i < 19)
+	{
+		if (buff[i] == '#')
+		{
+			if (i + 1 <= 18 && buff[i + 1] == '#')
+				count++;
+			if (i - 1 >= 0 && buff[i - 1] == '#')
+				count++;
+			if (i + 5 <= 18 && buff[i + 5] == '#')
+				count++;
+			if (i - 5 >= 0 && buff[i - 5] == '#')
+				count++;
+		}
+		i++;
+	}
+	return (count);
 }
 
 int     check_tetremino(char *chr)
 {
 	int i;
-	int sharp_count;
+	int blocks;
+	int contacts;
 	
 	i = 0;
-	sharp_count = 0;
+	blocks = 0;
+	contacts = get_contact(chr);
     while (*chr)
     {
 		i++;
         if (*chr == '#')
-            sharp_count++;
-        else if (!(*chr == '\n' && ((i % 5 == 0) || i == 21)) && *chr != '.')
+            blocks++;
+        else if (!(*chr == '\n' && (i % 5 == 0)) 
+                    && (!((*chr == '.') && (i % 5 != 0))))
 			return (0);
 		chr++;
     }
-	return (sharp_count == 4);
+	return (((blocks == 4) && (contacts == 6 || contacts == 8)) ? 1 : 0);
 }
 
-char     *validate_file(char *file)
+int     validate_file(char *file)
 {
-    	int     fd;
-	char	*buf;
-	int		count;
+    int             fd;
+	char	        *buf;
+	unsigned int    count_tetrems;
+    unsigned int    count_chars;
+	unsigned int	is_newline;
 
-	buf = ft_strnew(21);
+	buf = ft_strnew(20);
+    count_chars = 0;
+    count_tetrems = 0;
+	is_newline = 1;
     if ((fd = open(file, O_RDONLY)) < 0)
-		return(NULL);
+		return(0);
 	else
 	{
-		while ((count = read(fd, buf, 21)) == 21)
+		while ((count_chars = read(fd, buf, 20)) == 20 && is_newline)
 		{
-			printf("%s", buf);
-			if (check_tetremino(buf) && check_connects(buf))
-                printf("succes!");
-            else
-                return (NULL);
+			is_newline = 0;
+            count_tetrems++;
+			if (!check_tetremino(buf) || 
+				((is_newline = read(fd, buf, 1)) == 1 && *buf != '\n'))
+                return (0);
 		}
+        if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
+            return (0);
 	}
-	return("");
+	return(1);
 }

@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/14 21:36:04 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/16 17:02:22 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int		main(int argc, char **argv)
 		write(1, "usage: fillit input_file\n", 25);
 		return (0);
 	}
-	if (validate_file(argv[1]) == NULL)
+	if (!validate_file(argv[1]))
 	{
 		msg_error();
 		return (0);
 	}
+	else
+		write(1, "success check", 13);
 	return (0);
 }
