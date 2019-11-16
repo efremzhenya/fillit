@@ -6,11 +6,12 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 20:57:37 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/16 17:10:36 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/16 18:02:42 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "check.h"
+#include <stdio.h>
 
 int     get_contact(char *buff)
 {
@@ -34,29 +35,27 @@ int     get_contact(char *buff)
 		}
 		i++;
 	}
-	return (count);
+	return ((count == 6 || count == 8) ? 1 : 0);
 }
 
 int     check_tetremino(char *chr)
 {
 	int i;
 	int blocks;
-	int contacts;
 	
 	i = 0;
 	blocks = 0;
-	contacts = get_contact(chr);
     while (*chr)
     {
 		i++;
-        if (*chr == '#')
+        if (*chr == '#' && !(i % 5 == 0))
             blocks++;
         else if (!(*chr == '\n' && (i % 5 == 0)) 
                     && (!((*chr == '.') && (i % 5 != 0))))
 			return (0);
 		chr++;
     }
-	return (((blocks == 4) && (contacts == 6 || contacts == 8)) ? 1 : 0);
+	return ((blocks == 4) ? 1 : 0);
 }
 
 int     validate_file(char *file)
@@ -79,10 +78,11 @@ int     validate_file(char *file)
 		{
 			is_newline = 0;
             count_tetrems++;
-			if (!check_tetremino(buf) || 
+			if (!get_contact(buf) || !check_tetremino(buf) || 
 				((is_newline = read(fd, buf, 1)) == 1 && *buf != '\n'))
                 return (0);
 		}
+		printf("Tetrems count: %i\n", count_tetrems);
         if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
             return (0);
 	}
