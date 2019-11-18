@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/16 17:02:22 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/18 20:07:55 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int		main(int argc, char **argv)
 		msg_error();
 		return (0);
 	}
-	else
-		write(1, "success check", 13);
+	
 	return (0);
 }

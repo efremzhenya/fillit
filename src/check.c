@@ -6,12 +6,12 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 20:57:37 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/16 18:02:42 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/18 21:08:42 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "check.h"
-#include <stdio.h>
+#include "read.h"
 
 int     get_contact(char *buff)
 {
@@ -78,11 +78,11 @@ int     validate_file(char *file)
 		{
 			is_newline = 0;
             count_tetrems++;
+			save_tetrem(*buf);
 			if (!get_contact(buf) || !check_tetremino(buf) || 
 				((is_newline = read(fd, buf, 1)) == 1 && *buf != '\n'))
                 return (0);
 		}
-		printf("Tetrems count: %i\n", count_tetrems);
         if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
             return (0);
 	}
