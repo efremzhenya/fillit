@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": ["invalid_sample"],
+            "args": ["test1"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

@@ -11,6 +11,7 @@
                 "-g",
                 "${file}",
                 "${fileDirname}/check.c",
+                "${fileDirname}/read.c",
                 "${fileDirname}/libft.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
