@@ -9,7 +9,7 @@
             "command": "/usr/bin/gcc",
             "args": [
                 "-g",
-                "${file}",
+                "${fileDirname}/main.c",
                 "${fileDirname}/check.c",
                 "${fileDirname}/read.c",
                 "${fileDirname}/libft.a",

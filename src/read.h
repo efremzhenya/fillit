@@ -6,10 +6,13 @@
 # include "../libft/libft.h"
 # include "../includes/fillit.h"
 
-t_tetrem    *save_tetrem(char c, char *tetrem);
+t_tetrem    *create_tetrems(int fd);
+t_tetrem    *create_tetrem(char c, int *coords);
+int         apply_tetrem(char c,int *coords, t_tetrem *head);
+int         *get_coords_array(char *tetrem);
 int         get_min_x(char *tetrem);
 int         get_min_y(char *tetrem);
-int         *create_one(char *tetrem);
-t_tetrem    *create_tetrems(char *file);
+void        print_coords(t_tetrem *t_list);
+
 
 #endif

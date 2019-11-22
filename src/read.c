@@ -1,51 +1,81 @@
 #include "read.h"
 #include "../includes/fillit.h"
+#include <stdio.h>
 
-t_tetrem    *create_tetrems(char *file)
+t_tetrem    *create_tetrems(int fd)
 {
     char        c;
-    int         fd;
     char        *buf;
-    t_tetrem    *tetrems_list;
-    t_tetrem    *p_list;
+    int         *coords;
+    t_tetrem    *t_list;
     
     c = 'A';
     buf = ft_strnew(20);
-    if ((fd = open(file, O_RDONLY)) < 0)
-		return(NULL);
-	else
-	{
-		if (read(fd, buf, 20))
-		{
-            tetrems_list->c = c++;
-            tetrems_list->tetrem = create_one(buf);
-            tetrems_list->next = NULL;
-            p_list = tetrems_list;
-            read(fd, buf, 1);
-		}
-        while (read(fd, buf, 20))
-		{
-            tetrems_list->next = save_tetrem(c++, buf);
-            read(fd, buf, 1);
-            //TODO: fresh!
-		}
-        return p_list;
-	}
-    return(NULL);
-
+    t_list = NULL;
+    while (read(fd, buf, 20) == 20)
+    {
+        coords = get_coords_array(buf);
+        if (!t_list)
+            t_list = create_tetrem(c++, coords);
+        else if (!apply_tetrem(c++, coords, t_list))
+        {
+            free(coords);
+            //TODO: fresh t_list!
+            return (NULL);
+        }
+        read(fd, buf, 1);
+        free(coords);
+    }
+    close(fd);
+    print_coords(t_list);
+    return t_list;
 }
-t_tetrem     *save_tetrem(char c, char *tetrem)
+
+/*Testing func, Delete*/
+void    print_coords(t_tetrem *t_list)
 {
-    int         *new_tetrem;
-    t_tetrem    *tetrems_list;
+    int *p;
 
-    tetrems_list->c = c;
-    tetrems_list->tetrem = create_one(tetrem);
-    tetrems_list->next = NULL;
-    return (&tetrems_list);
+    p = NULL;
+    while (t_list != NULL)
+    {
+        printf("--------\n");
+        p = t_list->tetrem;
+        while (*p)
+        {
+            printf("%i\n", *p);
+            p++;
+        }
+        p = NULL;
+        t_list = t_list->next;
+    }
 }
 
-int     *create_one(char *tetrem)
+int     apply_tetrem(char c,int *coords, t_tetrem *head)
+{
+    t_tetrem *t_buf;
+
+    t_buf = head;
+    while (t_buf->next != NULL)
+        t_buf = t_buf->next;
+    if (!(t_buf->next = create_tetrem(c, coords)))
+        return (0);
+    return (1);
+}
+
+t_tetrem     *create_tetrem(char c, int *coords)
+{
+    t_tetrem    *new_tetrem;
+
+    if (!(new_tetrem = (t_tetrem *)malloc(sizeof(t_tetrem))))
+        return NULL;
+    new_tetrem->c = c;
+    new_tetrem->tetrem = coords;
+    new_tetrem->next = NULL;
+    return (new_tetrem);
+}
+
+int     *get_coords_array(char *tetrem)
 {
     int *coords;
     int *p;
@@ -56,18 +86,16 @@ int     *create_one(char *tetrem)
     i = 0;
     min_x = get_min_x(tetrem);
     min_y = get_min_y(tetrem);
-    if (!(coords = (int *)malloc(sizeof(int) * 8)))
+    if (!(coords = (int *)malloc(sizeof(int) * 9)))
         return (NULL);
     p = coords;
     while (tetrem[i] != '\0')
     {
         if (tetrem[i] == '#')
         {
-            *coords = i % 5 - min_x;
-            printf ("x = %i \n", *coords);
+            *coords = i % 5 - min_x + 1;
             coords++;
-            *coords = i / 5 - min_y;
-            printf("y = %i \n", *coords);
+            *coords = i / 5 - min_y + 1;
             coords++;
         }
         i++;
