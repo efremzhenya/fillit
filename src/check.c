@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 20:57:37 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/21 23:12:57 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/23 22:01:54 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ int     validate_file(char *file)
         if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
             return (0);
 	}
+	close(fd);
 	return(1);
 }

@@ -13,6 +13,7 @@ int         *get_coords_array(char *tetrem);
 int         get_min_x(char *tetrem);
 int         get_min_y(char *tetrem);
 void        print_coords(t_tetrem *t_list);
+void        *free_list(t_tetrem *head);
 
 
 #endif

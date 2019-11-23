@@ -17,12 +17,8 @@ t_tetrem    *create_tetrems(int fd)
         coords = get_coords_array(buf);
         if (!t_list)
             t_list = create_tetrem(c++, coords);
-        else if (!apply_tetrem(c++, coords, t_list))
-        {
-            free(coords);
-            //TODO: fresh t_list!
-            return (NULL);
-        }
+        else if (!(apply_tetrem(c++, coords, t_list)))
+            return (free_list(t_list));
         read(fd, buf, 1);
         free(coords);
     }
@@ -31,6 +27,16 @@ t_tetrem    *create_tetrems(int fd)
     return t_list;
 }
 
+void    *free_list(t_tetrem *head)
+{
+    while(head != NULL)
+    {
+        free(head->tetrem);
+        head = head->next;
+    }
+    free(head);
+    return (NULL);
+}
 /*Testing func, Delete*/
 void    print_coords(t_tetrem *t_list)
 {
@@ -69,8 +75,13 @@ t_tetrem     *create_tetrem(char c, int *coords)
 
     if (!(new_tetrem = (t_tetrem *)malloc(sizeof(t_tetrem))))
         return NULL;
+    if (!(new_tetrem->tetrem = (int *)malloc(sizeof(int) * 9)))
+	{
+        free(new_tetrem);
+        return (NULL);
+    }
+    ft_memcpy(new_tetrem->tetrem, coords, (sizeof(int) * 9));
     new_tetrem->c = c;
-    new_tetrem->tetrem = coords;
     new_tetrem->next = NULL;
     return (new_tetrem);
 }
@@ -78,7 +89,6 @@ t_tetrem     *create_tetrem(char c, int *coords)
 int     *get_coords_array(char *tetrem)
 {
     int *coords;
-    int *p;
     int i;
     int min_x;
     int min_y;
@@ -88,7 +98,6 @@ int     *get_coords_array(char *tetrem)
     min_y = get_min_y(tetrem);
     if (!(coords = (int *)malloc(sizeof(int) * 9)))
         return (NULL);
-    p = coords;
     while (tetrem[i] != '\0')
     {
         if (tetrem[i] == '#')
@@ -101,7 +110,7 @@ int     *get_coords_array(char *tetrem)
         i++;
     }
     *coords = '\0';
-    return p;
+    return (coords - 8);
 }
 
 int     get_min_y(char *tetrem)
