@@ -6,13 +6,15 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/22 22:12:57 by lseema           ###   ########.fr       */
+/*   Updated: 2019/11/30 19:54:00 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fillit.h"
 #include "check.h"
 #include "read.h"
+#include "solve.h"
+#include "get_map.h"
 
 void	msg_error()
 {
@@ -22,6 +24,9 @@ void	msg_error()
 int		main(int argc, char **argv)
 {
 	int fd;
+	int count_tetrems;
+	t_tetrem *tetrems;
+	t_map	*t_map;
 
 	if (argc != 2)
 	{
@@ -30,16 +35,18 @@ int		main(int argc, char **argv)
 	}
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
 		msg_error();
-	if (!validate_file(argv[1]))
+	if (!(count_tetrems = validate_file(argv[1])))
 	{
 		msg_error();
 		return (0);
 	}
-	if (!(create_tetrems(fd)))
+	if (!(tetrems = create_tetrems(fd)))
 	{
 		msg_error();
 		return(0);
 	}
+	t_map
+	solver(get_min_map(count_tetrems), tetrems);
 	
 	return (0);
 }

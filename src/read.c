@@ -23,7 +23,7 @@ t_tetrem    *create_tetrems(int fd)
         free(coords);
     }
     close(fd);
-    print_coords(t_list);
+    //print_coords(t_list);
     return t_list;
 }
 

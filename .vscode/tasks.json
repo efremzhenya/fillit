@@ -12,6 +12,8 @@
                 "${fileDirname}/main.c",
                 "${fileDirname}/check.c",
                 "${fileDirname}/read.c",
+                "${fileDirname}/get_map.c",
+                "${fileDirname}/solve.c",
                 "${fileDirname}/libft.a",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",

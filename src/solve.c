@@ -1,4 +1,5 @@
 #include "solve.h"
+#include "get_map.h"
 
 int     solver(t_map *map, t_tetrem *tetrem)
 {
@@ -17,6 +18,7 @@ int     solver(t_map *map, t_tetrem *tetrem)
         head = head->next;
     }
     ft_putstr(map->map);
+    return (1);
 }
 
 t_point     find_free_point(t_point start, t_map *map)
