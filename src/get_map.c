@@ -6,33 +6,14 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 14:38:53 by atfoster          #+#    #+#             */
-/*   Updated: 2019/11/30 19:54:13 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/03 21:27:19 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_map.h"
+#include <stdio.h>
 
-char     *get_min_map(int count)
-{
-    char    *map;
-    int     i;
-    int     k;
-
-	i = 0;
-    k = get_min_size(count);
-    if (!(map = ft_strnew(k * (k + 1))))
-        return (NULL);
-    while ((k * (k + 1)) > i)
-    {
-        map[i] = ((i - k) % (k + 1) || ((i - k) < 0)) ? '.' : '\n';
-        i++;
-    }
-    map[i] = '\0';
-    printf("%s", map);
-    return(map);
-}
-
-int     get_min_size(int count)
+size_t     get_min_size(int count)
 {
     if (count == 1)
         return (2);
@@ -58,29 +39,29 @@ int     get_min_size(int count)
     return (0);
 }
 
-void		free_map(t_map **map)
+void		free_map(t_map *map)
 {
 	size_t row;
 
 	if (!map)
 		return ;
 	row = 0;
-	while (row < (*map)->size)
-		ft_strdel(&((*map)->str[row++]));
-	free((*map)->str);
-	(*map)->str = NULL;
-	free(*map);
-	*map = NULL;
+	while (row < (map)->size)
+		ft_strdel(&((map)->map[row++]));
+	free((map)->map);
+	(map)->map = NULL;
+	free(map);
+	map = NULL;
 }
 
-void		update_map(t_map **map, char **rows)
+void		update_map(t_map *map, char **rows)
 {
 	size_t row;
 
 	row = 0;
-	while (row < (*map)->size)
-		ft_strdel(&((*map)->str[row++]));
-	(*map)->str = rows;
+	while (row < (map)->size)
+		ft_strdel(&((map)->map[row++]));
+	(map)->map = rows;
 }
 
 t_map	*create_map(size_t size)
@@ -89,7 +70,7 @@ t_map	*create_map(size_t size)
 	
 	if ((map = (t_map *)ft_memalloc(sizeof(*map))))
 	{
-		if (!(map -> str = make_map_str(size)))
+		if (!(map -> map = make_map_str(size)))
 		{
 			free(map);
 			return (NULL);
@@ -104,12 +85,12 @@ static char     **make_map_str(size_t size)
     char    **map;
     size_t  i;
     
-    if ((map = (char **)ft_memalloc((sizeof(*map) * (size + 1)))))
+    if ((map = (char **)malloc((sizeof(*map) * (size)))))
     {
         i = 0;
         while (i < size)
         {
-            if (!(map[i] = ft_strnew(size)))
+            if (!(map[i] = (char *)malloc(sizeof(map) * (size + 2))))
             {
                 while (--i)
                     ft_strdel(&map[i]);
@@ -117,19 +98,33 @@ static char     **make_map_str(size_t size)
                 return (NULL);
             }
             ft_memset(map[i], '.', size);
+            *(map[i] + size) = '\n';
+            *(map[i] + size + 1) = '\0';
+            i++;
         }
     }
     return (map);
 }
 
-int     main()
-{
-	unsigned int		n;
-	n = 2;
-	get_min_map(n);
-    return(0);
-}
 /*For check get_min_map*/
+
+// int main()
+// {
+//     int i;
+//     char *p;
+//     i = 0;
+//     while (i < 27){
+//         printf("size: %i\n",i);
+//         p = get_min_map(i++);
+//         while (*p)
+//         {
+//             write (1, &(*p), 1);
+//             p++;
+//         }
+//         printf("________\n");
+//     }
+//     return (0);
+// }
 
 // int main()
 // {

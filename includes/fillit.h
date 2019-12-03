@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/11 21:15:58 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/25 19:50:13 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/03 22:05:32 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 typedef struct s_tetrem
 {
-    int            *tetrem;
+    int             *tetrem;
     char            c;
     struct s_tetrem *next;
 }                   t_tetrem;
@@ -29,8 +29,8 @@ typedef struct	s_map
 
 typedef struct	s_point
 {
-    char		x;
-	size_t		y;
+    int		    x;
+	int		    y;
 }				t_point;
 
 #endif

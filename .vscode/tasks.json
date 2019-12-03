@@ -15,6 +15,7 @@
                 "${fileDirname}/get_map.c",
                 "${fileDirname}/solve.c",
                 "${fileDirname}/libft.a",
+
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
             ],

@@ -6,10 +6,10 @@
 # include "../libft/libft.h"
 # include "../includes/fillit.h"
 
-char     *get_min_map(int count);
-int     get_min_size(int count);
-void		free_map(t_map **map);
-void		update_map(t_map **map, char **rows);
+size_t          get_min_size(int count);
+void            free_map(t_map *map);
+void            update_map(t_map *map, char **rows);
 static char     **make_map_str(size_t size);
+t_map	        *create_map(size_t size);
 
 #endif

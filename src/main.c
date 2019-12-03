@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/11/30 19:54:00 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/03 21:32:36 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ void	msg_error()
 
 int		main(int argc, char **argv)
 {
-	int fd;
-	int count_tetrems;
-	t_tetrem *tetrems;
-	t_map	*t_map;
+	int 		fd;
+	int 		count_tetrems;
+	size_t 		count;
+	t_tetrem 	*tetrems;
+	t_map		*t_map;
 
 	if (argc != 2)
 	{
@@ -45,8 +46,8 @@ int		main(int argc, char **argv)
 		msg_error();
 		return(0);
 	}
-	t_map
-	solver(get_min_map(count_tetrems), tetrems);
+	count = get_min_size(count_tetrems);
+	solver(create_map(count), tetrems);
 	
 	return (0);
 }
