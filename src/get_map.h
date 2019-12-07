@@ -8,7 +8,7 @@
 
 size_t          get_min_size(int count);
 void            free_map(t_map *map);
-void            update_map(t_map *map, char **rows);
+t_point         update_map(t_map *map);
 static char     **make_map_str(size_t size);
 t_map	        *create_map(size_t size);
 t_point         del_tetrem_and_get_backpos(char c, t_map *map);

@@ -24,15 +24,13 @@ int     solver(t_map *map, t_tetrem *tetrem)
         else
         {
             if (head->c == 'A')
-            {
-                //free and update map++
-            }
+                start = update_map(map);
             else
             {
                 //start = del_tetrem_and_get_backpos(head->c, map);
-                if ((start = del_tetrem_and_get_newpos(--(head->c), map)).x != -1)
+                if ((start = del_tetrem_and_get_newpos(head->c, map)).x != -1)
                 {
-                    while (back->c != head->c)
+                    while (back->c != head->c - 1)
                         back = back->next;
                     head = back;
                     back = tetrem;
@@ -52,12 +50,13 @@ t_point     find_free_point(t_point start, t_map *map)
     {
         if (map->map[start.y][start.x] == '.')
             return (start);
-        if (map->map[start.y][start.x] == '\n')
+        else if (map->map[start.y][start.x] == '\n')
         {
             start.x = 0;
             start.y++;
         }
-        start.x++;
+        else
+            start.x++;
     }
     start.x = -1;
     return (start);
@@ -180,6 +179,7 @@ t_point    del_tetrem_and_get_newpos(char c, t_map *map)
 
     flag = 0;
     y = 0;
+    c--;
     while (map->size > y)
     {
         x = 0;

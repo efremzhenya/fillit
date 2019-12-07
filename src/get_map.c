@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 14:38:53 by atfoster          #+#    #+#             */
-/*   Updated: 2019/12/03 21:27:19 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 17:17:40 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,27 @@ void		free_map(t_map *map)
 	if (!map)
 		return ;
 	row = 0;
-	while (row < (map)->size)
-		ft_strdel(&((map)->map[row++]));
-	free((map)->map);
-	(map)->map = NULL;
+	while (row < map->size)
+		ft_strdel(&(map->map[row++]));
+	free(map->map);
+	map->map = NULL;
 	free(map);
 	map = NULL;
 }
 
-void		update_map(t_map *map, char **rows)
+t_point		update_map(t_map *map)
 {
 	size_t row;
+    t_point point;
 
 	row = 0;
-	while (row < (map)->size)
-		ft_strdel(&((map)->map[row++]));
-	(map)->map = rows;
+	while (row < map->size)
+		ft_strdel(&(map->map[row++]));
+	map->map = make_map_str(++row);
+    map->size = row;
+    point.y = 0;
+    point.x = 0;
+    return point;
 }
 
 t_map	*create_map(size_t size)
