@@ -14,6 +14,7 @@
                 "${fileDirname}/read.c",
                 "${fileDirname}/get_map.c",
                 "${fileDirname}/solve.c",
+                "${fileDirname}/utils.c",
                 "${fileDirname}/libft.a",
 
                 "-o",

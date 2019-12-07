@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/12/07 18:03:25 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 22:52:34 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,36 @@ int		msg_err_nofile()
 	return (0);
 };
 
+void    print_map(t_map *map)
+{
+    int i;
+
+    i = 0;
+    while (map->size > i)
+        ft_putstr(map->map[i++]);
+}
+
 int		main(int argc, char **argv)
 {
 	int 		fd;
-	int 		count_tetrems;
 	size_t 		count;
 	t_tetrem 	*tetrems;
-	t_map		*t_map;
+	t_map		*map;
+	t_point		start;
 
 	if (argc != 2)
 		return msg_err_nofile();
-	if ((fd = open(argv[1], O_RDONLY)) < 0)
+	if (((fd = open(argv[1], O_RDONLY)) < 0) || !(count = validate_file(argv[1]))
+		|| !(tetrems = create_tetrems(fd, 'A')))
 		return msg_error();
-	if (!(count_tetrems = validate_file(argv[1])))
-		return msg_error();
-	if (!(tetrems = create_tetrems(fd)))
-		return msg_error();
-	count = get_min_size(count_tetrems);
-	solver(create_map(count), tetrems);
+	map = create_map(get_min_size(count));
+	start.x = 0;
+	start.y = 0;
+	solver(map, tetrems, tetrems, tetrems, start);
 	free_list(tetrems);
+	tetrems = NULL;
+	print_map(map);
+	free_map(map);
+	map = NULL;
 	return (0);
 }

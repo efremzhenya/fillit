@@ -6,13 +6,12 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/13 20:57:37 by lseema            #+#    #+#             */
-/*   Updated: 2019/12/07 18:31:51 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 21:58:45 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "check.h"
 #include "read.h"
-#include <stdio.h>
 
 int     get_contact(char *buff)
 {
@@ -59,40 +58,40 @@ int     check_tetremino(char *chr)
 	return ((blocks == 4) ? 1 : 0);
 }
 
-int		fresh(char *buf)
-{
-	free(buf);
-	return (0);
-}
-
-int     validate_file(char *file)
+ssize_t     validate_file(char *file)
 {
     int             fd;
-	char	        *buf;
-	unsigned int    count_tetrems;
-    unsigned int    count_chars;
-	unsigned int	is_newline;
-
-    count_chars = 0;
-    count_tetrems = 0;
-	is_newline = 1;
+	ssize_t		count_tetrems;
     if ((fd = open(file, O_RDONLY)) < 0)
-		return fresh(buf);
-	else
-	{
-		buf = ft_strnew(20);
-		while ((count_chars = read(fd, buf, 20)) == 20 && is_newline)
-		{
-			is_newline = 0;
-            count_tetrems++;
-			if (!get_contact(buf) || !check_tetremino(buf) || 
-				((is_newline = read(fd, buf, 1)) == 1 && *buf != '\n'))
-                return fresh(buf);
-		}
-        if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
-            return fresh(buf);
-	}
+		return 0;
+	count_tetrems = validate_tetrems(fd);
 	close(fd);
-	free(buf);
 	return(count_tetrems);
+}
+
+ssize_t		validate_tetrems(int fd)
+{
+	ssize_t    		count_tetrems;
+    ssize_t    		count_chars;
+	unsigned int	is_newline;
+	char			*buf;
+
+	is_newline = 1;
+	count_tetrems = 0;
+	buf = ft_strnew(20);
+	while ((count_chars = read(fd, buf, 20)) == 20 && is_newline)
+	{
+		is_newline = 0;
+		count_tetrems++;
+		if (!get_contact(buf) || !check_tetremino(buf) || 
+			((is_newline = read(fd, buf, 1)) == 1 && *buf != '\n'))
+			{
+				free(buf);
+				return (0);
+			}
+	}
+	if (count_chars != 0 || is_newline || !count_tetrems || count_tetrems > 26)
+		count_tetrems = 0;
+	free(buf);
+	return count_tetrems;
 }

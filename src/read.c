@@ -1,15 +1,12 @@
 #include "read.h"
 #include "../includes/fillit.h"
-#include <stdio.h>
 
-t_tetrem    *create_tetrems(int fd)
+t_tetrem    *create_tetrems(int fd, char c)
 {
-    char        c;
     char        *buf;
     int         *coords;
     t_tetrem    *t_list;
     
-    c = 'A';
     buf = ft_strnew(20);
     t_list = NULL;
     while (read(fd, buf, 20) == 20)
@@ -21,7 +18,8 @@ t_tetrem    *create_tetrems(int fd)
         {
             free(buf);
             free(coords);
-            return (free_list(t_list));
+            free_list(t_list);
+            return (NULL);
         }
         read(fd, buf, 1);
         free(coords);
@@ -29,17 +27,6 @@ t_tetrem    *create_tetrems(int fd)
     close(fd);
     free(buf);
     return t_list;
-}
-
-void    *free_list(t_tetrem *head)
-{
-    while(head != NULL)
-    {
-        free(head->tetrem);
-        head = head->next;
-    }
-    free(head);
-    return (NULL);
 }
 
 int     apply_tetrem(char c,int *coords, t_tetrem *head)
@@ -79,8 +66,10 @@ int     *get_coords_array(char *tetrem)
     int min_y;
 
     i = 0;
+    while (tetrem[i] != '#')
+        ++i;
+    min_y = (i / 5);
     min_x = get_min_x(tetrem);
-    min_y = get_min_y(tetrem);
     if (!(coords = (int *)malloc(sizeof(int) * 9)))
         return (NULL);
     while (tetrem[i] != '\0')
@@ -98,28 +87,14 @@ int     *get_coords_array(char *tetrem)
     return (coords - 8);
 }
 
-int     get_min_y(char *tetrem)
+void    free_list(t_tetrem *head)
 {
-    int i;
-
-    i = 0;
-    while (tetrem[i] != '#')
-        ++i;
-    return (i / 5);
-}
-
-int     get_min_x(char *tetrem)
-{
-    int i;
-    int j;
-
-    i = 0;
-    j = 0;
-    while (tetrem[i] != '#')
+    while(head != NULL)
     {
-        i = i + 5;
-        if (i > 19)
-            i = ++j;
+        free(head->tetrem);
+        head->tetrem = NULL;
+        head = head->next;
     }
-    return (j);
+    free(head);
+    head = NULL;
 }

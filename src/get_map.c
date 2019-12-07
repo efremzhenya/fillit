@@ -6,12 +6,11 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 14:38:53 by atfoster          #+#    #+#             */
-/*   Updated: 2019/12/07 19:26:00 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 22:08:26 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_map.h"
-#include <stdio.h>
 
 size_t     get_min_size(int count)
 {
@@ -37,21 +36,6 @@ size_t     get_min_size(int count)
     else if (count == 26)
         return(11);
     return (0);
-}
-
-void		free_map(t_map *map)
-{
-	size_t row;
-
-	if (!map)
-		return ;
-	row = 0;
-	while (row < map->size)
-		ft_strdel(&(map->map[row++]));
-	free(map->map);
-	map->map = NULL;
-	free(map);
-	map = NULL;
 }
 
 t_point		update_map(t_map *map)
@@ -100,7 +84,8 @@ static char     **make_map_str(size_t size)
                 while (--i)
                     ft_strdel(&map[i]);
                 free(map);
-                return (NULL);
+                map = NULL;
+                return (map);
             }
             ft_memset(map[i], '.', size);
             *(map[i] + size) = '\n';
@@ -109,4 +94,19 @@ static char     **make_map_str(size_t size)
         }
     }
     return (map);
+}
+
+void		free_map(t_map *map)
+{
+	size_t row;
+
+	if (!map)
+		return ;
+	row = 0;
+	while (row < map->size)
+		ft_strdel(&(map->map[row++]));
+	free(map->map);
+	map->map = NULL;
+	free(map);
+	map = NULL;
 }
