@@ -6,7 +6,7 @@
 # include "../libft/libft.h"
 # include "../includes/fillit.h"
 
-int     solver(t_map *map, t_tetrem *tetrem);
+void     solver(t_map *map, t_tetrem *tetrem);
 t_point     find_free_point(t_point start, t_map *map);
 int     get_width(int *tetrem);
 int     get_height(int *tetrem);

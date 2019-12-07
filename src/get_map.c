@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 14:38:53 by atfoster          #+#    #+#             */
-/*   Updated: 2019/12/07 17:17:40 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 17:33:13 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,41 +110,3 @@ static char     **make_map_str(size_t size)
     }
     return (map);
 }
-
-/*For check get_min_map*/
-
-// int main()
-// {
-//     int i;
-//     char *p;
-//     i = 0;
-//     while (i < 27){
-//         printf("size: %i\n",i);
-//         p = get_min_map(i++);
-//         while (*p)
-//         {
-//             write (1, &(*p), 1);
-//             p++;
-//         }
-//         printf("________\n");
-//     }
-//     return (0);
-// }
-
-// int main()
-// {
-//     int i;
-//     char *p;
-//     i = 0;
-//     while (i < 27){
-//         printf("size: %i\n",i);
-//         p = get_min_map(i++);
-//         while (*p)
-//         {
-//             write (1, &(*p), 1);
-//             p++;
-//         }
-//         printf("________\n");
-//     }
-//     return (0);
-// }

@@ -1,7 +1,7 @@
 #include "solve.h"
 #include "get_map.h"
 
-int     solver(t_map *map, t_tetrem *tetrem)
+void     solver(t_map *map, t_tetrem *tetrem)
 {
     t_tetrem *head;
     t_tetrem *back;
@@ -27,7 +27,6 @@ int     solver(t_map *map, t_tetrem *tetrem)
                 start = update_map(map);
             else
             {
-                //start = del_tetrem_and_get_backpos(head->c, map);
                 if ((start = del_tetrem_and_get_newpos(head->c, map)).x != -1)
                 {
                     while (back->c != head->c - 1)
@@ -38,10 +37,7 @@ int     solver(t_map *map, t_tetrem *tetrem)
             }
         }
     }
-    i = 0;
-    while (map->size > i)
-        ft_putstr(map->map[i++]);
-    return (1);
+    print_map(map);
 }
 
 t_point     find_free_point(t_point start, t_map *map)
@@ -62,21 +58,6 @@ t_point     find_free_point(t_point start, t_map *map)
     return (start);
 }
 
-int     get_width(int *tetrem)
-{
-    int min;
-    int max;
-
-    max = (tetrem[0] >= tetrem[2]) ? tetrem[0] : tetrem[2];
-    max = (max >= tetrem[4]) ? max : tetrem[4];
-    max = (max >= tetrem[6]) ? max : tetrem[6];
-    min = (tetrem[0] <= tetrem[2]) ? tetrem[0] : tetrem[2];
-    min = (min <= tetrem[4]) ? min : tetrem[4];
-    min = (min <= tetrem[6]) ? min : tetrem[6];
-
-    return(max - min + 1);
-}
-
 int     get_width_on_first(int *tetrem)
 {
     int min;
@@ -86,20 +67,6 @@ int     get_width_on_first(int *tetrem)
     max = (max >= tetrem[4]) ? max : tetrem[4];
     max = (max >= tetrem[6]) ? max : tetrem[6];
     return(max - tetrem[0] + 1);
-}
-
-int     get_height(int *tetrem)
-{
-    int min;
-    int max;
-
-    max = (tetrem[1] >= tetrem[3]) ? tetrem[1] : tetrem[3];
-    max = (max >= tetrem[5]) ? max : tetrem[5];
-    max = (max >= tetrem[7]) ? max : tetrem[7];
-    min = (tetrem[0] <= tetrem[3]) ? tetrem[1] : tetrem[3];
-    min = (min <= tetrem[5]) ? min : tetrem[5];
-    min = (min <= tetrem[7]) ? min : tetrem[7];
-    return(max - min + 1);
 }
 
 int     get_height_on_first(int *tetrem)
@@ -117,7 +84,6 @@ t_point     find_free_pos(t_point start, t_map *map, int *tetrem)
 {
     int w;
     int h;
-    t_point buf;
     int i;
     int y;
     int x;
@@ -165,9 +131,6 @@ void    paste_tetrem(t_map *map, t_tetrem *tetrem, t_point start)
 
         map->map[step.y][step.x] = tetrem->c;
     }
-    i = 0;
-    while (map->size > i)
-        ft_putstr(map->map[i++]);
 }
 
 t_point    del_tetrem_and_get_newpos(char c, t_map *map)
@@ -206,41 +169,9 @@ t_point    del_tetrem_and_get_newpos(char c, t_map *map)
         else
             back_start.x = 0;
     }
-    print_map(map);
     return back_start;
 }
 
-t_point    del_tetrem_and_get_backpos(char c, t_map *map)
-{
-    int y;
-    t_point back_start;
-    char back_c;
-    int flag;
-    int x;
-
-    flag = 0;
-    y = 0;
-    back_c = --c - 1;
-    while (map->size > y)
-    {
-        x = 0;
-        while (map->map[y][x] != '\n')
-        {
-            if (map->map[y][x] == c)
-                map->map[y][x] = '.';
-            else if (flag == 0 && map->map[y][x] == back_c)
-            {
-                back_start.y = y;
-                back_start.x = x;
-                flag = 1;
-            }
-            x++;
-        }
-        y++;
-    }
-    print_map(map);
-    return back_start;
-}
 void    print_map(t_map *map)
 {
     int i;
@@ -248,4 +179,5 @@ void    print_map(t_map *map)
     i = 0;
     while (map->size > i)
         ft_putstr(map->map[i++]);
+    free_map(map);
 }
