@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/12/07 17:53:59 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 18:03:25 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,16 @@
 #include "solve.h"
 #include "get_map.h"
 
-void	msg_error()
+int		msg_error()
 {
 	write(1, "error\n", 6);
+	return (0);
+};
+
+int		msg_err_nofile()
+{
+	write(1, "usage: fillit input_file\n", 25);
+	return (0);
 };
 
 int		main(int argc, char **argv)
@@ -30,22 +37,13 @@ int		main(int argc, char **argv)
 	t_map		*t_map;
 
 	if (argc != 2)
-	{
-		write(1, "usage: fillit input_file\n", 25);
-		return (0);
-	}
+		return msg_err_nofile();
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
-		msg_error();
+		return msg_error();
 	if (!(count_tetrems = validate_file(argv[1])))
-	{
-		msg_error();
-		return (0);
-	}
+		return msg_error();
 	if (!(tetrems = create_tetrems(fd)))
-	{
-		msg_error();
-		return(0);
-	}
+		return msg_error();
 	count = get_min_size(count_tetrems);
 	solver(create_map(count), tetrems);
 	free_list(tetrems);

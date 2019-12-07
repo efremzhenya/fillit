@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/24 14:38:53 by atfoster          #+#    #+#             */
-/*   Updated: 2019/12/07 17:33:13 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 18:57:26 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,9 @@ t_point		update_map(t_map *map)
 	size_t row;
     t_point point;
 
-	row = 0;
-	while (row < map->size)
-		ft_strdel(&(map->map[row++]));
-	map->map = make_map_str(++row);
+	row = map->size + 1;
+	free_map(map);
+	map->map = make_map_str(row);
     map->size = row;
     point.y = 0;
     point.x = 0;
@@ -90,17 +89,18 @@ static char     **make_map_str(size_t size)
     char    **map;
     size_t  i;
     
-    if ((map = (char **)malloc((sizeof(*map) * (size)))))
+    if ((map = (char **)malloc((sizeof(char *) * (size)))))
     {
         i = 0;
         while (i < size)
         {
-            if (!(map[i] = (char *)malloc(sizeof(map) * (size + 2))))
+            if (!(map[i] = (char *)malloc(sizeof(char) * (size + 2))))
             {
                 while (--i)
                     ft_strdel(&map[i]);
                 free(map);
-                return (NULL);
+                map = NULL;
+                return (map);
             }
             ft_memset(map[i], '.', size);
             *(map[i] + size) = '\n';

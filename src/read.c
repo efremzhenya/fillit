@@ -18,12 +18,16 @@ t_tetrem    *create_tetrems(int fd)
         if (!t_list)
             t_list = create_tetrem(c++, coords);
         else if (!(apply_tetrem(c++, coords, t_list)))
+        {
+            free(buf);
+            free(coords);
             return (free_list(t_list));
+        }
         read(fd, buf, 1);
         free(coords);
     }
     close(fd);
-    //print_coords(t_list);
+    free(buf);
     return t_list;
 }
 
@@ -36,25 +40,6 @@ void    *free_list(t_tetrem *head)
     }
     free(head);
     return (NULL);
-}
-/*Testing func, Delete*/
-void    print_coords(t_tetrem *t_list)
-{
-    int *p;
-
-    p = NULL;
-    while (t_list != NULL)
-    {
-        printf("--------\n");
-        p = t_list->tetrem;
-        while (*p)
-        {
-            printf("%i\n", *p);
-            p++;
-        }
-        p = NULL;
-        t_list = t_list->next;
-    }
 }
 
 int     apply_tetrem(char c,int *coords, t_tetrem *head)

@@ -6,7 +6,6 @@ void     solver(t_map *map, t_tetrem *tetrem)
     t_tetrem *head;
     t_tetrem *back;
     t_point start;
-    int i;
 
     start.x = 0;
     start.y = 0;
@@ -126,9 +125,8 @@ void    paste_tetrem(t_map *map, t_tetrem *tetrem, t_point start)
     i = 2;
     while (i < 8)
     {
-            step.x = tetrem->tetrem[i++] - tetrem->tetrem[0] + start.x;
-            step.y = tetrem->tetrem[i++] - tetrem->tetrem[1] + start.y;
-
+        step.x = tetrem->tetrem[i++] - tetrem->tetrem[0] + start.x;
+        step.y = tetrem->tetrem[i++] - tetrem->tetrem[1] + start.y;
         map->map[step.y][step.x] = tetrem->c;
     }
 }
@@ -180,5 +178,4 @@ void    print_map(t_map *map)
     while (map->size > i)
         ft_putstr(map->map[i++]);
     free_map(map);
-    
 }
