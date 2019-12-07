@@ -6,7 +6,7 @@
 /*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 20:11:10 by lseema            #+#    #+#             */
-/*   Updated: 2019/12/03 21:32:36 by lseema           ###   ########.fr       */
+/*   Updated: 2019/12/07 17:53:59 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ int		main(int argc, char **argv)
 	}
 	count = get_min_size(count_tetrems);
 	solver(create_map(count), tetrems);
-	
+	free_list(tetrems);
 	return (0);
 }

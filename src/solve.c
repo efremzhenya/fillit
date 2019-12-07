@@ -180,4 +180,5 @@ void    print_map(t_map *map)
     while (map->size > i)
         ft_putstr(map->map[i++]);
     free_map(map);
+    
 }
